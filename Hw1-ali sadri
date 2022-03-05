@@ -1,0 +1,61 @@
+clc;
+clear all;
+h = 18;
+L = 1;
+k = 250;
+A = 0.065;
+p = 1;
+dx1 = 0.1;
+dx2 = 0.01;
+dx3 = 0.05;
+dx4=0.001;
+x1 = 0:dx1:1;
+x2 = 0:dx2:1;
+x3 = 0:dx3:1;
+x4=0:dx4:1;
+[theta1] = numeric(x1);
+[theta2] = numeric(x2);
+[theta3] = numeric(x3);
+[theta4]= numeric(x4);
+syms c1 c2
+m=sqrt(h*p/(k*A));
+eq1=c1*sinh(m*0)+c2*cosh(m*0)-100;
+eq2 = -k*(c1*m*cosh(m)+c2*m*sinh(m))- h*(c1*sinh(m)+c2*cosh(m));
+[c1,c2] = solve([eq1,eq2],[c1,c2]);
+x5 = 0:0.01:1;
+x6 = 0.75;
+y = c1*sinh(m*x5)+c2*cosh(m*x5);
+y1 = c1*sinh(m*x6)+c2*cosh(m*x6);
+close all
+subplot(1,1,1,'FontName','Times New Roman','FontSize',15)
+hold on
+box on
+plot(x1,theta1,'--','LineWidth',1.2)
+hold on
+plot(x2,theta2,'LineWidth',1.2)
+hold on
+plot(x3,theta3,'LineWidth',1.2)
+hold on
+plot(x4,theta4,'LineWidth',1.2)
+hold on
+plot(x5,y,'LineWidth',1.2)
+hold off
+ylabel('theta','FontName','Times New Roman','FontSize',15)
+xlabel('x','FontName','Times New Roman','FontSize',15)
+legend({'x=0.001','x=0.08','x=0.01','x=0.1','Analytic'},'FontName','Times New Roman','FontSize',15,'Location','northeast')
+index1 = find(x1==0.5);
+index2 = find(x2==0.5);
+index3 = find(x3==0.5);
+index4= find(x4==0.5);
+err1 =  theta1(index1)- y1 ;
+err2 = theta2(index2)- y1;
+err3 = theta3(index3)- y1;
+err4= theta4(index4)- y1;
+figure()
+subplot(1,1,1,'FontName','Times New Roman','FontSize',15)
+hold on
+box on
+plot([dx1 dx2 dx3 dx4],[err1 err2 err3 err4],'s-','LineWidth',2)
+xlabel('dx','FontName','Times New Roman','FontSize',15)
+ylabel('Error','FontName','Times New Roman','FontSize',15)
+grid on
