@@ -1,0 +1,20 @@
+function [theta] = numeric(x);
+dx = x(2)-x(1);
+h=18;
+L=1;
+k=250;
+A=0.065;
+p=1;
+m=sqrt(h*p/(k*A));
+f=-(2+m^2*dx^2);
+n=length(x);
+A1=[1 zeros(1,n-1)];
+A3=[zeros(1,n-2) -1 1+h/k*dx];
+A2=zeros(n-2,n-2);
+for i = 1:n-2
+    A2(i,[i i+1 i+2]) = [1 f 1];
+end
+A=[A1;A2;A3];
+B=[100;zeros(n-1,1)];
+theta=inv(A)*B;
+end
